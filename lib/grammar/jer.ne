@@ -77,6 +77,17 @@ expr
     | %identifier {% id %}
     | fun_call {% id %}
     | lambda {% id %}
+    | array {% id %}
+
+array -> %lbracket _ (expr _):* %rbracket
+    {%
+        (data) => {
+            return {
+                type: "array",
+                elements: data[2] ? data[2][0]: []
+            }
+        }
+    %}
 
 lambda -> %lparen _ (param_list):? _ %rparen _ %longarrow _ lambda_body
     {%
